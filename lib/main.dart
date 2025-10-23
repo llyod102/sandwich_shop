@@ -16,7 +16,7 @@ class App extends StatelessWidget{
       home: Scaffold(
         appBar: AppBar(title: const Text('Sandwich Counter')),
         body: const Center(
-        child: OrderItemDisplay(5, 'Club'),
+        child: OrderItemDisplay(5,'Club',3,2,'BLT','Veggie'),
           ),
       ),
       
@@ -30,20 +30,55 @@ class App extends StatelessWidget{
 }
 class OrderItemDisplay extends StatelessWidget {
   final String itemType;
-  final int quantity;
+  final String itemType2;
+  final String itemType3;
+  final int clubQuantity;
+  final int bltQuantity;
+  final int veggieQuantity;
 
-  const OrderItemDisplay(this.quantity, this.itemType, {super.key});
+  const OrderItemDisplay(this.clubQuantity, this.itemType, this.bltQuantity,this.veggieQuantity, this.itemType2,this.itemType3,{super.key});
 
   @override
   Widget build(BuildContext context) {
    return Container(
     color: Colors.blue,
-    width: 500,
+    width: 800,
     height: 200,
-    alignment: Alignment.center,
+    alignment: Alignment.topLeft,
 
-    child: Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}')
-   );
+    child:  Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Flexible(child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('$clubQuantity $itemType  sandwich(es): ${'🥪' * clubQuantity}',
+          softWrap: true,
+
+     
+
+        ))),
+         Flexible(child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('$bltQuantity $itemType2 sandwich(es): ${'🥪' * bltQuantity}',
+          softWrap: true,
+
+        ))),
+        Flexible(child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('$veggieQuantity $itemType3 sandwich(es): ${'🥪' * veggieQuantity}',
+
+          softWrap: true,
+
+        ))),
+
+
+
+
+
+      ]
+
+   ));
   }
 }
 
