@@ -43,7 +43,7 @@ class OrderItemDisplay extends StatelessWidget {
    return Container(
     color: Colors.blue,
     width: 800,
-    height: 200,
+    height: 300,
     alignment: Alignment.topLeft,
 
     child:  Row(
