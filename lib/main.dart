@@ -11,33 +11,11 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Sandwich Shop App',
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Sandwich Counter')),
-        body: Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const OrderItemDisplay(5, 'Footlong'),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () => print('Add button pressed!'),
-              child: const Text('Add'),
-            ),
-            ElevatedButton(
-              onPressed: () => print('Remove button pressed!'),
-              child: const Text('Remove'),
-            ),
-          ],
-        ),
-      ],
-    ),
-  ),
-      ));
-
+      home: OrderScreen(maxQuantity: 5),
+    );
   }
 }
+
 class OrderScreen extends StatefulWidget {
   final int maxQuantity;
 
@@ -52,9 +30,56 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen> {
   int _quantity = 0;
 
+  void _increaseQuantity() {
+    if (_quantity < widget.maxQuantity) {
+      setState(() => _quantity++);
+    }
+  }
+
+  void _decreaseQuantity() {
+    if (_quantity > 0) {
+      setState(() => _quantity--);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: const Text('Sandwich Counter')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            OrderItemDisplay(_quantity, 'Footlong'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: _quantity < widget.maxQuantity
+                      ? _increaseQuantity
+                      : null,
+
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.black,
+                  ),
+                  child: const Text('Add'),
+                ),
+                ElevatedButton(
+                  onPressed: _quantity > 0 ? _decreaseQuantity : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.blue,
+                  ),
+                  child: const Text('Remove'),
+                ),
+                const SizedBox(width: 200, child: TextField()),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -69,6 +94,3 @@ class OrderItemDisplay extends StatelessWidget {
     return Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}');
   }
 }
-
-
-
