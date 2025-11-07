@@ -73,6 +73,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   ),
                   child: const Text('Remove'),
                 ),
+                const SizedBox(width: 200, child: TextField()),
               ],
             ),
           ],
