@@ -19,7 +19,7 @@ class App extends StatelessWidget {
 class OrderScreen extends StatefulWidget {
   final int maxQuantity;
 
-  const OrderScreen({super.key, this.maxQuantity = 10});
+   OrderScreen({super.key, this.maxQuantity = 10});
 
   @override
   State<OrderScreen> createState() {
@@ -29,6 +29,11 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   int _quantity = 0;
+  String foodType = 'Footlong';
+
+
+  TextEditingController sandwichtext = TextEditingController();
+
 
   void _increaseQuantity() {
     if (_quantity < widget.maxQuantity) {
@@ -42,6 +47,8 @@ class _OrderScreenState extends State<OrderScreen> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,32 +57,26 @@ class _OrderScreenState extends State<OrderScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            OrderItemDisplay(_quantity, 'Footlong'),
+
+            OrderItemDisplay(_quantity,foodType),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: _quantity < widget.maxQuantity
-                      ? _increaseQuantity
-                      : null,
-
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.black,
-                  ),
+                StyleButton(
+                  onPressed: _quantity < widget.maxQuantity ? _increaseQuantity : null,
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.black,
                   child: const Text('Add'),
                 ),
-                ElevatedButton(
+                StyleButton(
                   onPressed: _quantity > 0 ? _decreaseQuantity : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.blue,
-                  ),
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.blue,
                   child: const Text('Remove'),
                 ),
-                const SizedBox(width: 200, child: TextField()),
               ],
             ),
+
           ],
         ),
       ),
@@ -87,10 +88,43 @@ class OrderItemDisplay extends StatelessWidget {
   final int quantity;
   final String itemType;
 
+
   const OrderItemDisplay(this.quantity, this.itemType, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}');
+  }
+}
+
+class StyleButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+  final Widget child;
+  final Color backgroundColor;
+  final Color foregroundColor;
+
+  const StyleButton({
+    Key? key,
+    required this.onPressed,
+    required this.child,
+    this.backgroundColor = Colors.blue,
+    this.foregroundColor = Colors.white,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.resolveWith<Color?>((states) {
+          if (states.contains(MaterialState.disabled)) {
+            return backgroundColor.withOpacity(0.5);
+          }
+          return backgroundColor;
+        }),
+        foregroundColor: MaterialStateProperty.all(foregroundColor),
+      ),
+      child: child,
+    );
   }
 }
