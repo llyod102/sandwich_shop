@@ -30,6 +30,8 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen> {
   int _quantity = 0;
   String foodType = 'Footlong';
+  double _sizeSlider = 0.0;
+
 
 
   TextEditingController sandwichtext = TextEditingController();
@@ -76,6 +78,27 @@ class _OrderScreenState extends State<OrderScreen> {
                 ),
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Slider(
+                  value: _sizeSlider,
+                  min: 0,
+                  max:1,
+                  divisions: 1,
+                  label: _sizeSlider == 0? '6 inch' : 'Footlong',
+                  onChanged: (value){
+                    setState((){
+                      _sizeSlider = value;
+                      foodType = _sizeSlider == 0? '6-inch' : 'Footlong';
+                    });
+                  }
+                )
+              ]
+
+            )
+              
+        
 
           ],
         ),
@@ -93,7 +116,8 @@ class OrderItemDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}');
+    String icon = itemType == '6-inch' ? '🥙' : '🥪';
+    return Text('$quantity $itemType sandwich(es): ${icon * quantity}');
   }
 }
 
