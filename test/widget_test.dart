@@ -168,4 +168,32 @@ void main() {
       expect(find.text('Note: Lots of lettuce'), findsOneWidget);
     });
   });
+   
+
+  testWidgets('Switch between 6-inch and footlong works',
+    (WidgetTester tester)
+    async {
+      await tester.pumpWidget(const App());
+      await tester.pumpAndSettle();
+
+    
+    final Finder sizeSwitchFinder = find.descendant(of: find.byType(OrderScreen),
+    matching: find.byType(Switch),
+    );
+
+    expect(sizeSwitchFinder, findsOneWidget);
+
+final Switch switchBefore = tester.widget<Switch>(sizeSwitchFinder);
+    expect(switchBefore.value, isTrue);
+
+    expect(find.textContaining('footlong sandwich(es)'), findsOneWidget);
+
+    await tester.tap(sizeSwitchFinder);
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('six-inch sandwich(es)'), findsOneWidget);
+
+    final Switch switchAfter = tester.widget<Switch>(sizeSwitchFinder);
+    expect(switchAfter.value, isFalse);
+    });
 }
